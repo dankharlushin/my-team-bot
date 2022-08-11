@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDate
 
-data class Season(
+data class ApiSeason(
     @JsonAlias("season_id")
     var id: Int,
     var name: String,

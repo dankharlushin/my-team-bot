@@ -2,7 +2,7 @@ package com.github.dankharlushin.myteambot.api.model
 
 import com.fasterxml.jackson.annotation.JsonValue
 
-enum class MatchStatus(@JsonValue val code: Int) {
+enum class ApiMatchStatus(@JsonValue val code: Int) {
     NOT_STARTED(0),
     INPLAY(1),
     UPDATE_LATER(2),

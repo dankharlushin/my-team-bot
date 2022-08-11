@@ -6,7 +6,5 @@ import org.springframework.boot.context.properties.ConstructorBinding
 @ConstructorBinding
 @ConfigurationProperties(prefix = "api")
 data class ApiProperties(
-    val leagueId: Int,
-    val countryId: Int,
-    val teams: List<Int>
+    val leagueId: Int
 )

@@ -2,7 +2,7 @@ package com.github.dankharlushin.myteambot.api.model
 
 import com.fasterxml.jackson.annotation.JsonAlias
 
-data class Venue(
+data class ApiVenue(
     @JsonAlias("venue_id")
     var id: Int,
     var name: String,
@@ -10,5 +10,5 @@ data class Venue(
     var city: String,
     @JsonAlias("country_id")
     var countryId: Int?,
-    var country: Country?
+    var country: ApiCountry?
 )

@@ -2,9 +2,9 @@ package com.github.dankharlushin.myteambot.api.service
 
 import com.github.dankharlushin.myteambot.api.ApiProperties
 import com.github.dankharlushin.myteambot.api.ApiTestConfiguration
-import com.github.dankharlushin.myteambot.api.model.MatchStatus
-import com.github.dankharlushin.myteambot.api.service.impl.MatchServiceImpl
-import com.github.dankharlushin.myteambot.api.service.impl.SeasonServiceImpl
+import com.github.dankharlushin.myteambot.api.model.ApiMatchStatus
+import com.github.dankharlushin.myteambot.api.service.impl.ApiMatchServiceImpl
+import com.github.dankharlushin.myteambot.api.service.impl.ApiSeasonServiceImpl
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,22 +17,22 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 
 @SpringBootTest(
-    classes = [MatchServiceImpl::class, SeasonServiceImpl::class],
+    classes = [ApiMatchServiceImpl::class, ApiSeasonServiceImpl::class],
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(ApiTestConfiguration::class)
 @EnableConfigurationProperties(ApiProperties::class)
 @DirtiesContext
-class MatchServiceTest {
+class ApiMatchServiceTest {
 
     @Autowired
-    lateinit var matchService: MatchService
+    lateinit var matchService: ApiMatchService
 
     @Test
     fun testGetMatchById() {
         val match = matchService.getMatchById(218614) //TODO add property
 
         assertEquals(218614, match.id)
-        assertEquals(MatchStatus.ENDED, match.matchStatus)
+        assertEquals(ApiMatchStatus.ENDED, match.matchStatus)
         assertEquals("finished", match.status)
         assertEquals(LocalDateTime.of(2019, 7, 13, 13, 30), match.matchStart)
         assertEquals(1480, match.seasonId)
@@ -77,7 +77,7 @@ class MatchServiceTest {
 
         assertTrue(matches.size > 1)
         assertEquals(218596, matches[0].id)
-        assertEquals(MatchStatus.ENDED, matches[0].matchStatus)
+        assertEquals(ApiMatchStatus.ENDED, matches[0].matchStatus)
         assertEquals("finished", matches[0].status)
         assertEquals(LocalDateTime.of(2019, 7, 12, 17, 0), matches[0].matchStart)
         assertEquals(1480, matches[0].seasonId)

@@ -1,7 +1,7 @@
 package com.github.dankharlushin.myteambot.api.service
 
 import com.github.dankharlushin.myteambot.api.ApiTestConfiguration
-import com.github.dankharlushin.myteambot.api.service.impl.LeagueServiceImpl
+import com.github.dankharlushin.myteambot.api.service.impl.ApiLeagueServiceImpl
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -11,14 +11,14 @@ import org.springframework.context.annotation.Import
 import org.springframework.test.annotation.DirtiesContext
 
 @SpringBootTest(
-    classes = [LeagueServiceImpl::class],
+    classes = [ApiLeagueServiceImpl::class],
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(ApiTestConfiguration::class)
 @DirtiesContext
-class LeagueServiceTest {
+class ApiLeagueServiceTest {
 
     @Autowired
-    lateinit var leagueService: LeagueService
+    lateinit var leagueService: ApiLeagueService
 
     @Test
     fun testGetLeagueById() {

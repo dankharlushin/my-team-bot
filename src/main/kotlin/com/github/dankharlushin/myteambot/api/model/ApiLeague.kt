@@ -2,7 +2,7 @@ package com.github.dankharlushin.myteambot.api.model
 
 import com.fasterxml.jackson.annotation.JsonAlias
 
-data class League(
+data class ApiLeague(
     @JsonAlias("league_id")
     var id: Int,
     @JsonAlias("country_id")
