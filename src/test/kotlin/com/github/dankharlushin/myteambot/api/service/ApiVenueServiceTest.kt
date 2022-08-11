@@ -1,7 +1,7 @@
 package com.github.dankharlushin.myteambot.api.service
 
 import com.github.dankharlushin.myteambot.api.ApiTestConfiguration
-import com.github.dankharlushin.myteambot.api.service.impl.VenueServiceImpl
+import com.github.dankharlushin.myteambot.api.service.impl.ApiVenueServiceImpl
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,14 +10,14 @@ import org.springframework.context.annotation.Import
 import org.springframework.test.annotation.DirtiesContext
 
 @SpringBootTest(
-    classes = [VenueServiceImpl::class],
+    classes = [ApiVenueServiceImpl::class],
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(ApiTestConfiguration::class)
 @DirtiesContext
-class VenueServiceTest {
+class ApiVenueServiceTest {
 
     @Autowired
-    lateinit var venueService: VenueService
+    lateinit var venueService: ApiVenueService
 
     @Test
     fun testGetVenueById() {

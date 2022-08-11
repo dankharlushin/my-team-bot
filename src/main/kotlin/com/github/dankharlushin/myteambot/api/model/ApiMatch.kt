@@ -8,11 +8,11 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import java.time.LocalDateTime
 
-data class Match(
+data class ApiMatch(
     @JsonAlias("match_id")
     var id: Int,
     @JsonAlias("status_code")
-    var matchStatus: MatchStatus,
+    var matchStatus: ApiMatchStatus,
     var status: String,
     @JsonAlias("match_start")
     @JsonDeserialize(using = LocalDateTimeDeserializer::class)
@@ -24,11 +24,11 @@ data class Match(
     @JsonAlias("season_id")
     var seasonId: Int,
     @JsonAlias("home_team")
-    var homeTeam: Team,
+    var homeTeam: ApiTeam,
     @JsonAlias("away_team")
-    var awayTeam: Team,
+    var awayTeam: ApiTeam,
     var stats: Stats,
-    var venue: Venue?
+    var venue: ApiVenue?
 ) {
     data class Stats(
         @JsonAlias("home_score")

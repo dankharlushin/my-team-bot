@@ -1,7 +1,7 @@
 package com.github.dankharlushin.myteambot.api.service
 
 import com.github.dankharlushin.myteambot.api.ApiTestConfiguration
-import com.github.dankharlushin.myteambot.api.service.impl.SeasonServiceImpl
+import com.github.dankharlushin.myteambot.api.service.impl.ApiSeasonServiceImpl
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -12,14 +12,14 @@ import org.springframework.test.annotation.DirtiesContext
 import java.time.LocalDate
 
 @SpringBootTest(
-    classes = [SeasonServiceImpl::class],
+    classes = [ApiSeasonServiceImpl::class],
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(ApiTestConfiguration::class)
 @DirtiesContext
-class SeasonServiceTest {
+class ApiSeasonServiceTest {
 
     @Autowired
-    lateinit var seasonService: SeasonService
+    lateinit var seasonService: ApiSeasonService
 
     @Test
     fun testGetSeasonById() {

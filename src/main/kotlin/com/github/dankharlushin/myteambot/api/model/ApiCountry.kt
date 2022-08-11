@@ -2,7 +2,7 @@ package com.github.dankharlushin.myteambot.api.model
 
 import com.fasterxml.jackson.annotation.JsonAlias
 
-data class Country(
+data class ApiCountry(
     @JsonAlias("country_id")
     var id: Int,
     var name: String,
