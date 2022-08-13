@@ -5,6 +5,8 @@ import com.github.dankharlushin.myteambot.bot.dto.CallbackQueryDTO
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 
+const val SUBSCRIBE_MESSAGE_CODE = "subscribe"
+const val UNSUBSCRIBE_MESSAGE_CODE = "unsubscribe"
 private val objectMapper: ObjectMapper = ObjectMapper()
 
 fun inlineKeyboard(data: List<Pair<String, CallbackQueryDTO>>, colNum: Int): InlineKeyboardMarkup {
