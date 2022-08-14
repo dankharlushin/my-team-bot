@@ -42,11 +42,8 @@ class SubscriptionCallbackHandler(
         val data = objectMapper.readValue(update.callbackQuery.data, CallbackQueryDTO::class.java).data
 
         return when {
-            data.containsKey(MATCH_KEY) ->
-                return handleMatchSubscription(update.callbackQuery, data[MATCH_KEY] as Int, data[SUBSCRIBE_KEY] as Boolean)
-            data.containsKey(TEAM_KEY) -> {
-                return handleTeamSubscription(update.callbackQuery, data[TEAM_KEY] as Int, data[SUBSCRIBE_KEY] as Boolean)
-            }
+            data.containsKey(MATCH_KEY) -> handleMatchSubscription(update.callbackQuery, data[MATCH_KEY] as Int, data[SUBSCRIBE_KEY] as Boolean)
+            data.containsKey(TEAM_KEY) -> handleTeamSubscription(update.callbackQuery, data[TEAM_KEY] as Int, data[SUBSCRIBE_KEY] as Boolean)
             else -> throw SubscriptionException()
         }
     }
