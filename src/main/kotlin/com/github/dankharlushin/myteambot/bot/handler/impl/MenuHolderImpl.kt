@@ -13,11 +13,15 @@ class MenuHolderImpl(sourceAccessor: MessageSourceAccessor) : MenuHolder {
     companion object {
         private const val ALL_TEAMS_CODE = "allTeamsButtonDescription"
         private const val MY_TEAMS_CODE = "myTeamsButtonDescription"
+        private const val MY_MATCHES_CODE = "myMatchesButtonDescription"
+        private const val HELP_CODE = "helpButtonDescription"
     }
 
     val defaultCommands: Map<String, String> = mapOf(
         "/teams" to sourceAccessor.getMessage(ALL_TEAMS_CODE),
-        "/favorites" to sourceAccessor.getMessage(MY_TEAMS_CODE)
+        "/myteams" to sourceAccessor.getMessage(MY_TEAMS_CODE),
+        "/mymatches" to sourceAccessor.getMessage(MY_MATCHES_CODE),
+        "/help" to sourceAccessor.getMessage(HELP_CODE)
     )
 
     override fun buildMenu(update: Update): SetMyCommands {
