@@ -3,6 +3,7 @@ package com.github.dankharlushin.myteambot.database.service.impl
 import com.github.dankharlushin.myteambot.database.entity.Match
 import com.github.dankharlushin.myteambot.database.entity.Subscriber
 import com.github.dankharlushin.myteambot.database.entity.Team
+import com.github.dankharlushin.myteambot.database.repository.MatchRepository
 import com.github.dankharlushin.myteambot.database.repository.SubscriberRepository
 import com.github.dankharlushin.myteambot.database.service.SubscriptionService
 import org.springframework.stereotype.Service
@@ -10,7 +11,8 @@ import org.telegram.telegrambots.meta.api.objects.User
 
 @Service
 class SubscriptionServiceImpl(
-    val subscriberRepository: SubscriberRepository
+    val subscriberRepository: SubscriberRepository,
+    val matchRepository: MatchRepository
 ) : SubscriptionService {
 
     override fun subscribe(user: User, match: Match) {
@@ -22,6 +24,8 @@ class SubscriptionServiceImpl(
     override fun subscribe(user: User, team: Team) {
         val subscriber = saveSubscriber(user)
         subscriber.teams.add(team)
+
+        matchRepository.getTeamMatches(team.id).forEach{ subscribe(user, it) }
         subscriberRepository.save(subscriber)
     }
 
@@ -34,6 +38,8 @@ class SubscriptionServiceImpl(
     override fun unsubscribe(user: User, team: Team) {
         val subscriber = subscriberRepository.getById(user.id.toInt())
         subscriber.teams.remove(team)
+
+        matchRepository.getTeamMatches(team.id).forEach{ unsubscribe(user, it) }
         subscriberRepository.save(subscriber)
     }
 

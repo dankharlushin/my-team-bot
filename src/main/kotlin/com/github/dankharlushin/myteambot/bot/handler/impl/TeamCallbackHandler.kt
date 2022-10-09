@@ -48,7 +48,7 @@ class TeamCallbackHandler(
     @Transactional
     override fun handle(update: Update): List<BotApiMethod<*>> {
         val data = objectMapper.readValue(update.callbackQuery.data, CallbackQueryDTO::class.java).data
-        val teamId = data[TEAM_ID] as Int
+        val teamId = data[TEAM_ID] as Long
         val team = teamRepository.getById(teamId)
         val comingMatches = matchRepository
             .getTeamMatchesByPeriod(teamId, LocalDateTime.now(), LocalDateTime.now().plusDays(period))
@@ -83,6 +83,6 @@ class TeamCallbackHandler(
         }
         return Pair(
             EmojiParser.parseToUnicode(sourceAccessor.getMessage(message)),
-            CallbackQueryDTO(queryId = "subscription", data = mapOf("teamId" to team.id, "sub" to subscribe)))
+            CallbackQueryDTO(queryId = "sub", data = mapOf("teamId" to team.id, "sub" to subscribe)))
     }
 }

@@ -25,7 +25,7 @@ class SubscriptionCallbackHandler(
 ) : CallbackQueryHandler {
 
     companion object {
-        private const val QUERY_ID = "subscription"
+        private const val QUERY_ID = "sub"
         private const val MATCH_KEY = "matchId"
         private const val TEAM_KEY = "teamId"
         private const val SUBSCRIBE_KEY = "sub"
@@ -42,15 +42,15 @@ class SubscriptionCallbackHandler(
         val data = objectMapper.readValue(update.callbackQuery.data, CallbackQueryDTO::class.java).data
 
         return when {
-            data.containsKey(MATCH_KEY) -> handleMatchSubscription(update.callbackQuery, data[MATCH_KEY] as Int, data[SUBSCRIBE_KEY] as Boolean)
-            data.containsKey(TEAM_KEY) -> handleTeamSubscription(update.callbackQuery, data[TEAM_KEY] as Int, data[SUBSCRIBE_KEY] as Boolean)
+            data.containsKey(MATCH_KEY) -> handleMatchSubscription(update.callbackQuery, data[MATCH_KEY] as Long, data[SUBSCRIBE_KEY] as Boolean)
+            data.containsKey(TEAM_KEY) -> handleTeamSubscription(update.callbackQuery, data[TEAM_KEY] as Long, data[SUBSCRIBE_KEY] as Boolean)
             else -> throw SubscriptionException()
         }
     }
 
     private fun handleTeamSubscription(
         callbackQuery: CallbackQuery,
-        teamId: Int,
+        teamId: Long,
         subscribe: Boolean
     ): List<BotApiMethod<*>> {
         if (subscribe) {
@@ -65,7 +65,7 @@ class SubscriptionCallbackHandler(
 
     private fun handleMatchSubscription(
         callbackQuery: CallbackQuery,
-        matchId: Int,
+        matchId: Long,
         subscribe: Boolean
     ): List<BotApiMethod<*>> {
         if (subscribe) {
