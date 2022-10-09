@@ -42,7 +42,7 @@ class MatchCallbackHandler(
     @Transactional
     override fun handle(update: Update): List<BotApiMethod<*>> {
         val data = objectMapper.readValue(update.callbackQuery.data, CallbackQueryDTO::class.java).data
-        val match = matchRepository.getById(data[MATCH_ID] as Int)
+        val match = matchRepository.getById(data[MATCH_ID] as Long)
 
         val keyboardData: MutableList<Pair<String, CallbackQueryDTO>> = mutableListOf()
         keyboardData.add(teamData(match.homeTeam))
@@ -62,10 +62,10 @@ class MatchCallbackHandler(
         val matchStart = parseToUnicode(sourceAccessor.getMessage(START_MESSAGE_CODE, arrayOf(formatter.format(match.matchStart))))
         val matchStadium = match.venue?.let {
             return@let parseToUnicode(sourceAccessor.getMessage(STADIUM_MESSAGE_CODE, arrayOf(it.name)))
-        }
-        val matchCity = match.venue?.city.let {
+        } ?: ""
+        val matchCity = match.venue?.city?.let {
             return@let parseToUnicode(sourceAccessor.getMessage(CITY_MESSAGE_CODE, arrayOf(it)))
-        }
+        } ?: ""
         val teams = "${match.homeTeam.name.uppercase()} - ${match.awayTeam.name.uppercase()}"
 
         return "$teams\n" +
@@ -82,7 +82,7 @@ class MatchCallbackHandler(
             subscribe = false
         }
         return Pair(parseToUnicode(sourceAccessor.getMessage(message)),
-            CallbackQueryDTO(queryId = "subscription", data = mapOf("matchId" to match.id, "sub" to subscribe)))
+            CallbackQueryDTO(queryId = "sub", data = mapOf("matchId" to match.id, "sub" to subscribe)))
     }
 
     private fun teamData(team: Team): Pair<String, CallbackQueryDTO> {

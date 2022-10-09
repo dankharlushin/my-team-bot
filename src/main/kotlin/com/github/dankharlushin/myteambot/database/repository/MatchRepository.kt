@@ -8,12 +8,15 @@ import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
 
 @Repository
-interface MatchRepository : JpaRepository<Match, Int> {
+interface MatchRepository : JpaRepository<Match, Long> {
+
+    @Query(value = "select m from Match m where (m.homeTeam.id = :teamId or m.awayTeam.id = :teamId)")
+    fun getTeamMatches(@Param("teamId") teamId: Long): List<Match>
 
     @Query(value = "select m from Match m " +
             "where (m.homeTeam.id = :teamId or m.awayTeam.id = :teamId) " +
             "and m.matchStart between :dateFrom and :dateTo")
-    fun getTeamMatchesByPeriod(@Param("teamId") teamId: Int,
+    fun getTeamMatchesByPeriod(@Param("teamId") teamId: Long,
                                @Param("dateFrom") dateFrom: LocalDateTime,
                                @Param("dateTo") dateTo: LocalDateTime): List<Match>
 }

@@ -16,5 +16,5 @@ class Subscriber(
     @OneToMany(targetEntity = Match::class)
     var matches: MutableSet<Match> = mutableSetOf(),
     @OneToMany(targetEntity = Team::class)
-    var teams: MutableSet<Team> = mutableSetOf(),
+    var teams: MutableSet<Team> = mutableSetOf()
 )
