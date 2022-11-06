@@ -2,6 +2,7 @@ package com.github.dankharlushin.myteambot.database
 
 import com.github.dankharlushin.myteambot.api.sportmonk.service.SmApiVenueService
 import com.github.dankharlushin.myteambot.database.entity.Match
+import com.github.dankharlushin.myteambot.database.entity.MatchStatus
 import com.github.dankharlushin.myteambot.database.entity.Team
 import com.github.dankharlushin.myteambot.database.entity.Venue
 import com.github.dankharlushin.myteambot.database.repository.MatchRepository
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Component
 import java.sql.Date
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 @Component
@@ -32,7 +35,7 @@ class DataFetcher(
 ) {
 
     companion object {
-        private const val MATCHES_FETCH_INTERVAL: Long = 192 * 1000//FIXME can be least
+        private const val MATCHES_FETCH_INTERVAL: Long = 30 * 1000//FIXME can be least
         private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
     }
 
@@ -83,8 +86,10 @@ class DataFetcher(
         venues: List<com.sportmonks.data.entity.Venue>
     ): Match {
         return Match(id = apiMatch.id,
-            matchStatus = apiMatch.time.status,
-            matchStart = LocalDateTime.parse(apiMatch.time.startingAt.dateTime, formatter),
+            matchStatus = MatchStatus.valueOf(apiMatch.time.status),
+            matchStart = ZonedDateTime.of(LocalDateTime.parse(apiMatch.time.startingAt.dateTime, formatter), ZoneId.of(apiMatch.time.startingAt.timezone)),
+            localTeamScore = apiMatch.scores.localTeamScore,
+            visitorTeamScore = apiMatch.scores.visitorTeamScore,
             leagueId = apiMatch.leagueId,
             seasonId = apiMatch.seasonId,
             homeTeam = mapTeam(teams.first { apiMatch.localteamId == it.id }),

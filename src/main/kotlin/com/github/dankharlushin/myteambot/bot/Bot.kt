@@ -1,9 +1,12 @@
 package com.github.dankharlushin.myteambot.bot
 
+import com.github.dankharlushin.myteambot.database.event.SendMessageEvent
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import java.io.Serializable
 
@@ -25,5 +28,11 @@ class Bot(val handlerManager: HandlerManager) : TelegramLongPollingBot() {
     override fun onUpdateReceived(update: Update) {
         val handler = handlerManager.findHandler(update)
         handler.handle(update).forEach { execute(it) }
+    }
+
+    @EventListener
+    fun sendMessageByEvent(sendMessageEvent: SendMessageEvent) {
+        val message = SendMessage.builder().chatId(sendMessageEvent.chatId).text(sendMessageEvent.message).build()
+        execute(message)
     }
 }

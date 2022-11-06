@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 @Repository
 interface MatchRepository : JpaRepository<Match, Long> {
@@ -17,6 +17,6 @@ interface MatchRepository : JpaRepository<Match, Long> {
             "where (m.homeTeam.id = :teamId or m.awayTeam.id = :teamId) " +
             "and m.matchStart between :dateFrom and :dateTo")
     fun getTeamMatchesByPeriod(@Param("teamId") teamId: Long,
-                               @Param("dateFrom") dateFrom: LocalDateTime,
-                               @Param("dateTo") dateTo: LocalDateTime): List<Match>
+                               @Param("dateFrom") dateFrom: ZonedDateTime,
+                               @Param("dateTo") dateTo: ZonedDateTime): List<Match>
 }

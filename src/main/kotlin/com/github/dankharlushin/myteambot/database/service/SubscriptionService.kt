@@ -6,9 +6,9 @@ import org.telegram.telegrambots.meta.api.objects.User
 
 interface SubscriptionService {
 
-    fun subscribe(user: User, match: Match)
+    fun subscribe(user: User, match: Match, chatId: Long)
 
-    fun subscribe(user: User, team: Team)
+    fun subscribe(user: User, team: Team, chatId: Long)
 
     fun unsubscribe(user: User, match: Match)
 
