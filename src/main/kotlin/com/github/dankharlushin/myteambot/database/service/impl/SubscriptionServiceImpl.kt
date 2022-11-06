@@ -39,6 +39,7 @@ class SubscriptionServiceImpl(//FIXME add scheduler
         val subscriber = subscriberRepository.getById(user.id.toInt())
         subscriber.matches.remove(match)
         subscriberRepository.save(subscriber)
+        subscriptionRepository.removeBySubscriberIdAndMatchId(subscriber.id, match.id)
     }
 
     override fun unsubscribe(user: User, team: Team) {
