@@ -20,7 +20,8 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.User
-import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 
@@ -51,7 +52,8 @@ class TeamCallbackHandler(
         val teamId = data[TEAM_ID] as Long
         val team = teamRepository.getById(teamId)
         val comingMatches = matchRepository
-            .getTeamMatchesByPeriod(teamId, LocalDateTime.now(), LocalDateTime.now().plusDays(period))
+            .getTeamMatchesByPeriod(teamId, ZonedDateTime.now(ZoneId.of("Europe/Moscow")),
+                ZonedDateTime.now(ZoneId.of("Europe/Moscow")).plusDays(period)) //FIXME use KeyboardButton with requestLocation
 
         val keyboardData: MutableList<Pair<String, CallbackQueryDTO>> = mutableListOf()
         for (match in comingMatches) {

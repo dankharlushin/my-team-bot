@@ -54,7 +54,7 @@ class SubscriptionCallbackHandler(
         subscribe: Boolean
     ): List<BotApiMethod<*>> {
         if (subscribe) {
-            subscriptionService.subscribe(callbackQuery.from, teamRepository.getById(teamId))
+            subscriptionService.subscribe(callbackQuery.from, teamRepository.getById(teamId), callbackQuery.message.chatId)
             return listOf(constructMessage(callbackQuery.message.chatId, sourceAccessor.getMessage(SUBSCRIBE_TEAM_MESSAGE_CODE)))
         }
 
@@ -69,7 +69,7 @@ class SubscriptionCallbackHandler(
         subscribe: Boolean
     ): List<BotApiMethod<*>> {
         if (subscribe) {
-            subscriptionService.subscribe(callbackQuery.from, matchRepository.getById(matchId))
+            subscriptionService.subscribe(callbackQuery.from, matchRepository.getById(matchId), callbackQuery.message.chatId)
             return listOf(constructMessage(callbackQuery.message.chatId, sourceAccessor.getMessage(SUBSCRIBE_MATCH_MESSAGE_CODE)))
         }
 
