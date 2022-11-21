@@ -2,6 +2,7 @@ package com.github.dankharlushin.myteambot.bot.handler.impl
 
 import com.github.dankharlushin.myteambot.bot.handler.MenuHolder
 import com.github.dankharlushin.myteambot.bot.handler.TextMessageHandler
+import org.slf4j.LoggerFactory
 import org.springframework.context.support.MessageSourceAccessor
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod
@@ -17,11 +18,14 @@ class StartCommandHandler(
     companion object {
         private const val COMMAND = "/start"
         private const val REPLY_MESSAGE_CODE = "startMessage"
+
+        private val LOG = LoggerFactory.getLogger(StartCommandHandler::class.java)
     }
 
     override fun getTextMessage() = COMMAND
 
     override fun handle(update: Update): List<BotApiMethod<*>> {
+        LOG.info("Start command has been used by user: '${update.message.from.firstName}' in chat with id: '${update.message.chatId}'")
         val messageReply = SendMessage.builder()
             .chatId(update.message.chatId.toString())
             .text(initText(update))
