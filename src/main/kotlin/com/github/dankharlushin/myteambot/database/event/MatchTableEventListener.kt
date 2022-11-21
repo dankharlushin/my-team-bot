@@ -6,6 +6,7 @@ import org.hibernate.event.spi.PreInsertEvent
 import org.hibernate.event.spi.PreInsertEventListener
 import org.hibernate.event.spi.PreUpdateEvent
 import org.hibernate.event.spi.PreUpdateEventListener
+import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Component
@@ -16,6 +17,10 @@ import javax.persistence.PreUpdate
 class MatchTableEventListener(
     val applicationEventPublisher: ApplicationEventPublisher
 ) {
+
+    companion object {
+        private val LOG = LoggerFactory.getLogger(MatchTableEventListener::class.java)
+    }
 
     @PreUpdate
     fun preUpdate(match: Match) {
@@ -36,6 +41,8 @@ class MatchTableEventListener(
             visitorTeam = match.awayTeam.name,
             Pair(match.localTeamScore, match.visitorTeamScore))
         )
+
+        LOG.info("MatchStatusEvent for match: '${match.id}' has been published")
     }
 
     private fun publishGoalEvent(previousVersion: Match, match: Match) {
@@ -51,6 +58,7 @@ class MatchTableEventListener(
             afterEventScore = afterEventScore)
 
         applicationEventPublisher.publishEvent(goalEvent)
+        LOG.info("GoalEvent with status: '${goalEvent.goalStatus}' has been published")
     }
 
     private fun initGoalStatus(old: Match, new: Match): GoalStatus {

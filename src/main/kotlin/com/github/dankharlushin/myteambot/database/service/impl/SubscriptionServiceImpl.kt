@@ -8,6 +8,7 @@ import com.github.dankharlushin.myteambot.database.repository.MatchRepository
 import com.github.dankharlushin.myteambot.database.repository.SubscriberRepository
 import com.github.dankharlushin.myteambot.database.repository.SubscriptionRepository
 import com.github.dankharlushin.myteambot.database.service.SubscriptionService
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.objects.User
 
@@ -18,13 +19,19 @@ class SubscriptionServiceImpl(//FIXME add scheduler
     val matchRepository: MatchRepository
 ) : SubscriptionService {
 
+    companion object {
+        private val LOG = LoggerFactory.getLogger(SubscriptionRepository::class.java)
+    }
+
     override fun subscribe(user: User, match: Match, chatId: Long) {
         val subscriber = saveSubscriber(user, chatId)
         subscriber.matches.add(match)
         subscriberRepository.save(subscriber)
 
-        if (subscriptionRepository.getBySubscriberIdAndMatchId(subscriber.id, match.id) == null)
+        if (subscriptionRepository.getBySubscriberIdAndMatchId(subscriber.id, match.id) == null) {
             subscriptionRepository.save(Subscription(subscriber = subscriber, match = match))
+            LOG.debug("Subscriber with id: '${subscriber.id}' subscribe on match with id: '${match.id}'")
+        }
     }
 
     override fun subscribe(user: User, team: Team, chatId: Long) {
@@ -74,6 +81,7 @@ class SubscriptionServiceImpl(//FIXME add scheduler
         val subscriber =
             Subscriber(id = user.id.toInt(), name = user.firstName, lastName = user.lastName, userName = user.userName,
                 chatId = chatId.toString())
+        LOG.info("Saving new subscriber with name: '${subscriber.name}' and chat id: '${subscriber.chatId}'")
         return subscriberRepository.save(subscriber)
     }
 

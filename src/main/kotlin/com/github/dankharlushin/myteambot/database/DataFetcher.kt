@@ -11,6 +11,7 @@ import com.github.dankharlushin.myteambot.database.repository.VenueRepository
 import com.sportmonks.APIClient
 import com.sportmonks.data.entity.Fixture
 import com.sportmonks.endpoints.FixturesEndPointParams
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled
@@ -36,11 +37,14 @@ class DataFetcher(
 
     companion object {
         private const val MATCHES_FETCH_INTERVAL: Long = 30 * 1000//FIXME can be least
-        private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
+        private val FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        private val LOG = LoggerFactory.getLogger(DataFetcher::class.java)
     }
 
     @Scheduled(fixedDelay = MATCHES_FETCH_INTERVAL)
     fun fetchMatchesData() {
+        LOG.info("Fetch matches data...")
         val matchesByDateRange = APIClient.getInstance(apiToken).fixturesEndPointInstance.findByDateRange(
             Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now().plusDays(daysPeriod)), FixturesEndPointParams()
         )
@@ -87,7 +91,7 @@ class DataFetcher(
     ): Match {
         return Match(id = apiMatch.id,
             matchStatus = MatchStatus.valueOf(apiMatch.time.status),
-            matchStart = ZonedDateTime.of(LocalDateTime.parse(apiMatch.time.startingAt.dateTime, formatter), ZoneId.of(apiMatch.time.startingAt.timezone)),
+            matchStart = ZonedDateTime.of(LocalDateTime.parse(apiMatch.time.startingAt.dateTime, FORMATTER), ZoneId.of(apiMatch.time.startingAt.timezone)),
             localTeamScore = apiMatch.scores.localTeamScore,
             visitorTeamScore = apiMatch.scores.visitorTeamScore,
             leagueId = apiMatch.leagueId,

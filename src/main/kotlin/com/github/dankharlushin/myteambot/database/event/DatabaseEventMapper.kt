@@ -2,6 +2,7 @@ package com.github.dankharlushin.myteambot.database.event
 
 import com.github.dankharlushin.myteambot.database.entity.MatchStatus
 import com.github.dankharlushin.myteambot.database.repository.SubscriptionRepository
+import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.event.EventListener
 import org.springframework.context.support.MessageSourceAccessor
@@ -21,6 +22,8 @@ class DatabaseEventMapper(
         private const val GOAL_CANCELLATION_EVENT_CODE = "goalCancellationEvent"
         private const val MATCH_START_EVENT_CODE = "matchStartEvent"
         private const val MATCH_END_EVENT_CODE = "matchEndEvent"
+
+        private val LOG = LoggerFactory.getLogger(DatabaseEventMapper::class.java)
     }
 
     @EventListener
